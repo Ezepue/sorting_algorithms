@@ -5,7 +5,7 @@
  * @arr: array
  * @start: 1st element
  * @end: last element
- * @arr_size: size
+ * @len: size
  * Return: index of swapped element
  */
 int partition_func(int *arr, int start, int end, size_t len)
@@ -39,7 +39,7 @@ int partition_func(int *arr, int start, int end, size_t len)
  * @arr: array
  * @start: start
  * @end: end
- * @arr_size: length of array
+ * @len: length of array
  * Return: void
  */
 void helper_func(int *arr, int start, int end, size_t len)
