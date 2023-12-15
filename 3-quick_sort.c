@@ -1,81 +1,69 @@
 #include "sort.h"
 
 /**
- * quick_sort - Sorts an array of integers in ascending order using
- *              the Quick sort algorithm (Lomuto partition scheme).
- *
- * @array: The array to be sorted
- * @size: Number of elements in the array
+ * partition_func - function that implements Lumoto partition scheme.
+ * @arr: array
+ * @start: 1st element
+ * @end: last element
+ * @arr_size: size
+ * Return: index of swapped element
  */
-void quick_sort(int *array, size_t size)
+int partition_func(int *arr, int start, int end, size_t arr_size)
 {
-	if (!array || size < 2)
-		return;
+	int index, counter, temp, pivot = arr[end];
 
-	quick_sort_recursive(array, 0, size - 1, size);
-}
+	index = start - 1;
 
-/**
- * quick_sort_recursive - Recursive function for quick_sort
- *
- * @array: The array to be sorted
- * @low: The starting index of the partition to be sorted
- * @high: The ending index of the partition to be sorted
- * @size: Number of elements in the array
- */
-void quick_sort_recursive(int *array, int low, int high, size_t size)
-{
-	int partition;
-
-	if (low < high)
+	for (counter = start; counter < end; counter++)
 	{
-		partition = lomuto_partition(array, low, high, size);
-
-		quick_sort_recursive(array, low, partition - 1, size);
-		quick_sort_recursive(array, partition + 1, high, size);
-	}
-}
-
-/**
- * lomuto_partition - Lomuto partition scheme for quick_sort
- *
- * @array: The array to be sorted
- * @low: The starting index of the partition to be sorted
- * @high: The ending index of the partition to be sorted
- * @size: Number of elements in the array
- *
- * Return: The partition index
- */
-int lomuto_partition(int *array, int low, int high, size_t size)
-{
-	int pivot, i, j, temp;
-
-	pivot = array[high];
-	i = low - 1;
-
-	for (j = low; j <= high - 1; ++j)
-	{
-		if (array[j] <= pivot)
+		if (arr[counter] <= pivot)
 		{
-			++i;
-			if (i != j)
-			{
-				/* Swap array[i] and array[j] */
-				temp = array[i];
-				array[i] = array[j];
-				array[j] = temp;
-
-				print_array(array, size);
-			}
+			index++;
+			temp = arr[index];
+			arr[index] = arr[counter];
+			arr[counter] = temp;
+			if (index != counter)
+			print_array(arr, arr_size);
 		}
 	}
+	temp = arr[index + 1];
+	arr[index + 1] = arr[end];
+	arr[end] = temp;
+	if (end != (index + 1))
+		print_array(arr, arr_size);
+	return (index + 1);
+}
 
-	/* Swap array[i + 1] and array[high] (pivot) */
-	temp = array[i + 1];
-	array[i + 1] = array[high];
-	array[high] = temp;
+/**
+ * helper_func - Helper function for sort_func.
+ * @arr: array
+ * @start: start
+ * @end: end
+ * @arr_size: length of array
+ * Return: void
+ */
+void helper_func(int *arr, int start, int end, size_t arr_size)
+{
+	int partition_index;
 
-	print_array(array, size);
+	if (start < end)
+	{
+		partition_index = partition_func(arr, start, end, arr_size);
 
-	return (i + 1);
+		helper_func(arr, start, partition_index - 1, arr_size);
+		helper_func(arr, partition_index + 1, end, arr_size);
+	}
+}
+
+/**
+ * sort_func - function
+ *@sort_array: array to sort
+ *@arr_size: size of array
+ *Return: nothing.
+ */
+void sort_func(int *sort_array, size_t arr_size)
+{
+	if (arr_size < 2 || sort_array == NULL)
+		return;
+	helper_func(sort_array, 0, arr_size - 1, arr_size);
 }
