@@ -8,30 +8,30 @@
  * @arr_size: size
  * Return: index of swapped element
  */
-int partition_func(int *arr, int start, int end, size_t arr_size)
+int partition_func(int *arr, int start, int end, size_t len)
 {
-	int index, counter, temp, pivot = arr[end];
+	int i, j, swap, pivot = arr[end];
 
-	index = start - 1;
+	i = start - 1;
 
-	for (counter = start; counter < end; counter++)
+	for (j = start; j < end; j++)
 	{
-		if (arr[counter] <= pivot)
+		if (arr[j] <= pivot)
 		{
-			index++;
-			temp = arr[index];
-			arr[index] = arr[counter];
-			arr[counter] = temp;
-			if (index != counter)
-			print_array(arr, arr_size);
+			i++;
+			swap = arr[i];
+			arr[i] = arr[j];
+			arr[j] = swap;
+			if (i != j)
+			print_array(arr, len);
 		}
 	}
-	temp = arr[index + 1];
-	arr[index + 1] = arr[end];
-	arr[end] = temp;
-	if (end != (index + 1))
-		print_array(arr, arr_size);
-	return (index + 1);
+	swap = arr[i + 1];
+	arr[i + 1] = arr[end];
+	arr[end] = swap;
+	if (end != (i + 1))
+		print_array(arr, len);
+	return (i + 1);
 }
 
 /**
@@ -42,28 +42,28 @@ int partition_func(int *arr, int start, int end, size_t arr_size)
  * @arr_size: length of array
  * Return: void
  */
-void helper_func(int *arr, int start, int end, size_t arr_size)
+void helper_func(int *arr, int start, int end, size_t len)
 {
-	int partition_index;
+	int pi;
 
 	if (start < end)
 	{
-		partition_index = partition_func(arr, start, end, arr_size);
+		pi = partition_func(arr, start, end, len);
 
-		helper_func(arr, start, partition_index - 1, arr_size);
-		helper_func(arr, partition_index + 1, end, arr_size);
+		helper_func(arr, start, pi - 1, len);
+		helper_func(arr, pi + 1, end, len);
 	}
 }
 
 /**
- * sort_func - function
- *@sort_array: array to sort
- *@arr_size: size of array
+ * quick_sort - function
+ *@arr: array to sort
+ *@len: size of array
  *Return: nothing.
  */
-void sort_func(int *sort_array, size_t arr_size)
+void quick_sort(int *arr, size_t len)
 {
-	if (arr_size < 2 || sort_array == NULL)
+	if (len < 2 || arr == NULL)
 		return;
-	helper_func(sort_array, 0, arr_size - 1, arr_size);
+	helper_func(arr, 0, len - 1, len);
 }
